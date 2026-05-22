@@ -5,8 +5,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root',
 })
 export class ApiService {
-  baseUrl = 'http://localhost:8000/api';
-
+  //baseUrl = 'http://localhost:8000/api';
+  baseUrl = 'https://salon-api-r62s.onrender.com/api';
   constructor(private http: HttpClient) {}
 
   // 🔐 HEADERS (POST / GET)
