@@ -1,0 +1,63 @@
+<div class="container">
+  <div class="left">
+    <img src="images/img1.jpg" />
+  </div>
+
+  <div class="right">
+    <h2>Reservar cita</h2>
+
+    <form (ngSubmit)="submit()">
+      <!-- NOMBRE -->
+      <input type="text" [(ngModel)]="cita.nombre" name="nombre" placeholder="Nombre" required />
+
+      <!-- EMAIL -->
+      <input type="email" [(ngModel)]="cita.email" name="email" placeholder="Email" required />
+
+      <!-- TELEFONO -->
+      <input
+        type="text"
+        [(ngModel)]="cita.telefono"
+        name="telefono"
+        placeholder="Teléfono"
+        required
+      />
+
+      <!-- SERVICIOS -->
+      <select [(ngModel)]="cita.servicio" name="servicio" required>
+        <option value="">Selecciona servicio</option>
+
+        <option *ngFor="let s of servicios" [value]="s.nombre_servicio">
+          {{ s.nombre_servicio }} - {{ s.costo }}€
+        </option>
+      </select>
+
+      <!-- FECHA -->
+      <input
+        type="date"
+        [(ngModel)]="cita.fecha"
+        name="fecha"
+        (ngModelChange)="loadHorasReservadas()"
+        required
+      />
+
+      <!-- HORARIOS -->
+      <div class="horarios" *ngIf="cita.fecha">
+        <div
+          *ngFor="let hora of horarios"
+          class="hora-box"
+          [ngClass]="{
+            ocupado: estaReservado(hora),
+            libre: !estaReservado(hora),
+            selected: cita.hora === hora,
+          }"
+          (click)="seleccionarHora(hora)"
+        >
+          {{ hora }}
+        </div>
+      </div>
+
+      <!-- BUTTON -->
+      <button type="submit">Reservar</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+security:
+    password_hashers:
+        App\Entity\Admin:
+            algorithm: auto
+
+    providers:
+        users_in_memory: { memory: null }
+
+        # 🔥 ADMIN من DB
+        admin_provider:
+            entity:
+                class: App\Entity\Admin
+                property: usuario
+
+    firewalls:
+        dev:
+            pattern: ^/(_profiler|_wdt|assets|build)/
+            security: false
+
+        # 🔐 LOGIN SYSTEM
+        login:
+            pattern: ^/api/login
+            stateless: true
+            provider: admin_provider
+            json_login:
+                check_path: /api/login
+                username_path: username
+                password_path: password
+
+        # 🔥 باقي API يبقى خدام
+        main:
+            lazy: true
+            provider: admin_provider
+
+    access_control:
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }

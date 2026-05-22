@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Citas{% endblock %}
+
+{% block body %}
+    <h1>Citas</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ cita.id }}</td>
+            </tr>
+            <tr>
+                <th>Fecha_cita</th>
+                <td>{{ cita.fechaCita ? cita.fechaCita|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Hora_cita</th>
+                <td>{{ cita.horaCita ? cita.horaCita|date('H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{{ cita.estado }}</td>
+            </tr>
+            <tr>
+                <th>Comentario</th>
+                <td>{{ cita.comentario }}</td>
+            </tr>
+            <tr>
+                <th>Fecha_solicitud</th>
+                <td>{{ cita.fechaSolicitud ? cita.fechaSolicitud|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_citas_index') }}">back to list</a>
+
+    <a href="{{ path('app_citas_edit', {'id': cita.id}) }}">edit</a>
+
+    {{ include('citas/_delete_form.html.twig') }}
+{% endblock %}
