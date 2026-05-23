@@ -4,12 +4,9 @@ WORKDIR /app
 
 COPY . .
 
-RUN apt-get update && apt-get install -y \
-    unzip \
-    git \
-    libpq-dev
+RUN apt-get update && apt-get install -y unzip git
 
-RUN docker-php-ext-install pdo pdo_pgsql
+RUN docker-php-ext-install pdo pdo_mysql mysqli
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
