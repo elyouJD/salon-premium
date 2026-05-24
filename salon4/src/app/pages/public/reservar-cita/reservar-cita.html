@@ -43,11 +43,11 @@
       <!-- HORARIOS -->
       <div class="horarios" *ngIf="cita.fecha">
         <div
-          *ngFor="let hora of horarios"
+          *ngFor="let hora of getHorariosDisponibles()"
           class="hora-box"
           [ngClass]="{
             ocupado: estaReservado(hora),
-            libre: !estaReservado(hora),
+            libre: !estaReservado(hora) && cita.hora !== hora,
             selected: cita.hora === hora,
           }"
           (click)="seleccionarHora(hora)"

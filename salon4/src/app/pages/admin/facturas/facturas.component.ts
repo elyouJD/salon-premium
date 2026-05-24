@@ -66,53 +66,323 @@ import jsPDF from 'jspdf';
   `,
   styles: [
     `
-      .page {
-        padding: 20px;
+      * {
+        box-sizing: border-box;
       }
+
+      .page {
+        padding: 24px;
+        background: #eef2f7;
+        min-height: 100vh;
+      }
+
+      h2 {
+        margin-bottom: 24px;
+
+        font-size: 28px;
+        font-weight: 700;
+
+        color: #0f172a;
+      }
+
+      /* TABLE */
 
       table {
         width: 100%;
+
+        border-collapse: collapse;
+
         background: white;
-        border-radius: 10px;
-        margin-top: 20px;
+
+        border-radius: 20px;
+
+        overflow: hidden;
+
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.06);
+      }
+
+      thead {
+        background: linear-gradient(90deg, #0f172a, #1e293b);
       }
 
       th {
-        background: #111;
         color: white;
-        padding: 12px;
+
+        padding: 18px;
+
+        text-align: left;
+
+        font-size: 14px;
+        font-weight: 600;
       }
 
       td {
-        padding: 12px;
+        padding: 16px 18px;
+
+        border-bottom: 1px solid #edf2f7;
+
+        color: #334155;
+
+        font-size: 14px;
       }
+
+      tbody tr {
+        transition: 0.2s;
+      }
+
+      tbody tr:hover {
+        background: #f8fafc;
+      }
+
+      /* BUTTONS */
+
+      .view,
+      .delete {
+        border: none;
+
+        width: 40px;
+        height: 40px;
+
+        border-radius: 10px;
+
+        color: white;
+
+        cursor: pointer;
+
+        font-size: 15px;
+
+        transition: 0.25s;
+      }
+
+      .view {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+
+        margin-right: 6px;
+      }
+
+      .delete {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+      }
+
+      .view:hover,
+      .delete:hover {
+        transform: scale(1.05);
+      }
+
+      /* EMPTY */
+
+      p {
+        color: #64748b;
+        font-size: 15px;
+      }
+
+      /* MODAL */
 
       .modal {
         position: fixed;
         inset: 0;
-        background: rgba(0, 0, 0, 0.7);
+
+        background: rgba(15, 23, 42, 0.6);
+
         display: flex;
         justify-content: center;
         align-items: center;
+
+        padding: 15px;
+
+        z-index: 999;
       }
 
       .factura {
         background: white;
-        padding: 30px;
-        border-radius: 10px;
-        width: 400px;
+
+        padding: 26px;
+
+        border-radius: 22px;
+
+        width: 100%;
+        max-width: 500px;
+
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+
+        animation: fadeIn 0.25s ease;
+      }
+
+      .factura h2 {
+        margin-bottom: 20px;
+
+        color: #0f172a;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .factura p {
+        margin: 12px 0;
+
+        color: #334155;
+
+        font-size: 15px;
+      }
+
+      .factura b {
+        color: #0f172a;
+      }
+
+      /* ACTIONS */
+
+      .actions {
+        display: flex;
+
+        gap: 12px;
+
+        margin-top: 24px;
+
+        flex-wrap: wrap;
+      }
+
+      .download,
+      .close {
+        flex: 1;
+
+        border: none;
+
+        padding: 13px 16px;
+
+        border-radius: 12px;
+
+        cursor: pointer;
+
+        color: white;
+
+        font-size: 14px;
+        font-weight: 600;
+
+        transition: 0.25s;
       }
 
       .download {
-        background: green;
-        color: white;
-        border: none;
-        padding: 10px;
-        border-radius: 6px;
+        background: linear-gradient(135deg, #2563eb, #4f46e5);
       }
 
       .close {
-        margin-left: 10px;
+        background: linear-gradient(135deg, #64748b, #475569);
+      }
+
+      .download:hover,
+      .close:hover {
+        transform: translateY(-2px);
+        opacity: 0.95;
+      }
+
+      /* MOBILE */
+
+      @media (max-width: 900px) {
+        .page {
+          padding: 14px;
+        }
+
+        table,
+        tbody,
+        tr,
+        td {
+          display: block;
+          width: 100%;
+        }
+
+        thead {
+          display: none;
+        }
+
+        tr {
+          background: white;
+
+          margin-bottom: 18px;
+
+          border-radius: 18px;
+
+          padding: 16px;
+
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+        }
+
+        td {
+          border: none;
+
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          gap: 10px;
+
+          padding: 12px 0;
+
+          font-size: 14px;
+        }
+
+        td::before {
+          font-weight: 700;
+          color: #0f172a;
+        }
+
+        td:nth-child(1)::before {
+          content: 'Código';
+        }
+
+        td:nth-child(2)::before {
+          content: 'Cliente';
+        }
+
+        td:nth-child(3)::before {
+          content: 'Total';
+        }
+
+        td:nth-child(4)::before {
+          content: 'Acciones';
+        }
+
+        .factura {
+          max-width: 100%;
+        }
+
+        .actions {
+          flex-direction: column;
+        }
+
+        .download,
+        .close {
+          width: 100%;
+        }
+      }
+
+      /* SMALL MOBILE */
+
+      @media (max-width: 480px) {
+        h2 {
+          font-size: 22px;
+        }
+
+        td {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        td::before {
+          margin-bottom: 4px;
+        }
+
+        .factura {
+          padding: 20px;
+        }
       }
     `,
   ],

@@ -110,64 +110,73 @@ export class ReservarCitaComponent implements OnInit {
   // LOAD RESERVED HOURS
   // =========================
 
-  /* loadHorasReservadas() {
-    this.horariosReservados = [];
-
-    if (!this.cita.fecha) return;
-
-    this.citas.forEach((c: any) => {
-      const fechaApi = c.fecha_cita.substring(0, 10);
-
-      const horaApi = c.hora_cita.substring(0, 5);
-
-      if (fechaApi === this.cita.fecha) {
-        this.horariosReservados.push(horaApi);
-      }
-    });
-  }
-*/
-  // =========================
-  // LOAD RESERVED HOURS
-  // =========================
-
   loadHorasReservadas() {
     this.horariosReservados = [];
 
     if (!this.cita.fecha) return;
 
-    this.citas.forEach((c: any) => {
-      // FECHA
-      const fechaApi = c.fecha_cita.substring(0, 10);
+    // 🔥 جلب citas مباشرة من API
+    this.api.getCitas().subscribe((res: any) => {
+      const citas = res.member || [];
 
-      // HORA FIX FINAL
-      let horaApi = '';
+      citas.forEach((c: any) => {
+        // تاريخ cita
+        const fechaApi = c.fecha_cita.substring(0, 10);
 
-      // إذا hour فيها T
-      if (c.hora_cita.includes('T')) {
-        horaApi = c.hora_cita.split('T')[1].substring(0, 5);
-      }
+        console.log('HORA API 👉', c.hora_cita);
+        // ساعة cita
+        const horaApi = String(c.hora_cita).substring(11, 16);
 
-      // normal hour
-      else {
-        horaApi = c.hora_cita.substring(0, 5);
-      }
+        // نفس التاريخ
+        if (fechaApi === this.cita.fecha) {
+          this.horariosReservados.push(horaApi);
+        }
+      });
 
-      // SAME DAY
-      if (fechaApi === this.cita.fecha) {
-        this.horariosReservados.push(horaApi);
-      }
+      console.log('HORAS RESERVADAS 👉', this.horariosReservados);
     });
-
-    console.log('HORAS RESERVADAS 👉', this.horariosReservados);
   }
+
   // =========================
   // CHECK RESERVED
   // =========================
-
   estaReservado(hora: string): boolean {
+    console.log('CHECK HORA 👉', hora);
+
+    console.log('RESERVADAS 👉', this.horariosReservados);
+
     return this.horariosReservados.includes(hora);
   }
 
+  // =========================
+  // FILTER PAST HOURS
+  // =========================
+
+  getHorariosDisponibles() {
+    // إذا ماختارش تاريخ
+    if (!this.cita.fecha) {
+      return this.horarios;
+    }
+
+    const hoy = new Date();
+
+    const fechaHoy = hoy.toISOString().split('T')[0];
+
+    // إذا التاريخ ماشي اليوم
+    if (this.cita.fecha !== fechaHoy) {
+      return this.horarios;
+    }
+
+    // الوقت الحالي
+    const horaActual = hoy.getHours();
+
+    return this.horarios.filter((h: string) => {
+      const hora = Number(h.split(':')[0]);
+
+      // نخلي الساعة الحالية ومافوق
+      return hora >= horaActual;
+    });
+  }
   // =========================
   // SELECT HOUR
   // =========================
