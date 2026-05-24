@@ -17,18 +17,18 @@ import { Component } from '@angular/core';
           <p>Tu salón moderno para citas, belleza y estilo ✨</p>
         </div>
 
-        <!-- LINKS -->
+        <!-- SOCIAL -->
 
         <div class="links">
-          <h3>Enlaces</h3>
+          <h3>Redes Sociales</h3>
 
-          <a href="/">Inicio</a>
+          <a href="https://facebook.com" target="_blank"> Facebook </a>
 
-          <a href="/servicios">Servicios</a>
+          <a href="https://instagram.com" target="_blank"> Instagram </a>
 
-          <a href="/reservar-cita"> Reservar </a>
+          <a href="https://twitter.com" target="_blank"> Twitter </a>
 
-          <a href="/login"> Admin </a>
+          <a href="https://wa.me/34600000000" target="_blank"> WhatsApp </a>
         </div>
 
         <!-- CONTACT -->
